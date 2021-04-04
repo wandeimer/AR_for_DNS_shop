@@ -1,7 +1,4 @@
-# flios
+# AR_for_DNS_shop
 
-This project shows how you can navigate from flutter to iOS View Controller
-and then back to Flutter application.
-
-- [Read more about platform channels](https://flutter.dev/docs/development/platform-integration/platform-channels)
+An application for a digital technology store that allows you to place store goods in your home using augmented reality
 
