@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import ARKit
+import flutter_downloader
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -35,15 +36,21 @@ import ARKit
         }
         self.mainCoordinator?.start()
     })
-    //
-    GeneratedPluginRegistrant.register(with: self)
-    //
+
     let navigationController = UINavigationController(rootViewController: flutterViewController)
     navigationController.isNavigationBarHidden = true
     window?.rootViewController = navigationController
     mainCoordinator = AppCoordinator(navigationController: navigationController)
     window?.makeKeyAndVisible()
     
+    FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
+    
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+}
+
+private func registerPlugins(registry: FlutterPluginRegistry) {
+    if (!registry.hasPlugin("FlutterDownloaderPlugin")) {
+       FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
+    }
 }
