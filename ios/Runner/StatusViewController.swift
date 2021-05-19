@@ -43,7 +43,7 @@ class StatusViewController: UIViewController {
     
     @IBOutlet weak private var restartExperienceButton: UIButton!
 
-    @IBAction func backToFlutter(_ sender: Any) {
+    @IBAction func goToFlutter(_ sender: Any) {
         
         coordinatorDelegate?.navigateToFlutter()
     }

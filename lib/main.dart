@@ -3,9 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'listDownloadedFiles.dart';
+import 'dowloadFilesFunctions.dart';
 
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -31,13 +35,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  static const platform =
+
+  static const platformViev =
       const MethodChannel('com.objectbeam.flios/navToLogin');
+  DownloadFilesFunction downloadFiles = DownloadFilesFunction();
 
   Future<void> _navToLogin() async {
     try {
-      final int result = await platform.invokeMethod('goToLogin');
+      final int result = await platformViev.invokeMethod('goToLogin');
       print('Resul: $result');
     } on PlatformException catch (e) {
       print("Failed: '${e.message}'.");
@@ -50,9 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    setState(() {});
     _navToLogin();
   }
 
@@ -71,6 +74,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 _incrementCounter();
               },
               child: Text('кнопочка!!!'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _incrementCounter();
+              },
+              child: Text('еще одна кнопочка!!!'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ListDownloadedFiles())
+                );
+              },
+              child: Text('а шо там у нас скачалос?'),
             )
           ],
         ),
