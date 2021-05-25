@@ -25,6 +25,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var upperControlsView: UIView!
 
+    @IBAction func goToFlutter(_ sender: Any) {
+        coordinatorDelegate?.navigateToFlutter()
+    }
     // MARK: - UI Elements
     
     let coachingOverlay = ARCoachingOverlayView()

@@ -10,6 +10,21 @@ import flutter_downloader
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    
+    let flutterViewController: FlutterViewController = window?.rootViewController as! FlutterViewController
+    
+    let tstChannel = FlutterMethodChannel(name: "com.objectbeam.flios/navToLogin",
+                                          binaryMessenger: flutterViewController.binaryMessenger)
+    
+    tstChannel.setMethodCallHandler({
+        (call: FlutterMethodCall, result: FlutterResult) -> Void in
+        guard call.method == "goToLogin" else {
+            result(FlutterMethodNotImplemented)
+            return
+        }
+        self.mainCoordinator?.start()
+    })
+    
     guard ARWorldTrackingConfiguration.isSupported else {
         fatalError("""
             ARKit is not available on this device. For apps that require ARKit
@@ -22,28 +37,15 @@ import flutter_downloader
         """) // For details, see https://developer.apple.com/documentation/arkit
     }
     
+    FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
+    
     GeneratedPluginRegistrant.register(with: self)
     
-    let flutterViewController: FlutterViewController = window?.rootViewController as! FlutterViewController
-    //
-    let tstChannel = FlutterMethodChannel(name: "com.objectbeam.flios/navToLogin",
-                                          binaryMessenger: flutterViewController.binaryMessenger)
-    tstChannel.setMethodCallHandler({
-        (call: FlutterMethodCall, result: FlutterResult) -> Void in
-        guard call.method == "goToLogin" else {
-            result(FlutterMethodNotImplemented)
-            return
-        }
-        self.mainCoordinator?.start()
-    })
-
     let navigationController = UINavigationController(rootViewController: flutterViewController)
     navigationController.isNavigationBarHidden = true
     window?.rootViewController = navigationController
     mainCoordinator = AppCoordinator(navigationController: navigationController)
     window?.makeKeyAndVisible()
-    
-    FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
     
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
