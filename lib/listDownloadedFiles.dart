@@ -64,7 +64,7 @@ class _ListDownloadedFiles extends State<ListDownloadedFiles> {
 
   void _listOfFiles() async {
     _detectPlatform();
-    directory = (await getApplicationDocumentsDirectory()).path;
+    directory = (await getApplicationDocumentsDirectory()).path + Platform.pathSeparator + 'Download';
     if (platform == "ios") {
       countOfSymbolInAdress = directory.length + 6;
     }

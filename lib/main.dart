@@ -5,9 +5,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'listDownloadedFiles.dart';
 import 'dowloadFilesFunctions.dart';
+import 'downloadPage.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(debug: true);
   runApp(MyApp());
 }
 
@@ -73,13 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 _incrementCounter();
               },
-              child: Text('кнопочка!!!'),
+              child: Text('ЕБАНУТЬ МОДЕЛЬ!!!'),
             ),
             ElevatedButton(
               onPressed: () {
-                _incrementCounter();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DownloadPage())
+                );
               },
-              child: Text('еще одна кнопочка!!!'),
+              child: Text('СКАЧАТ МОДЕЛ!!!'),
             ),
             ElevatedButton(
               onPressed: () {

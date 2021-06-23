@@ -76,6 +76,7 @@ class VirtualObjectSelectionViewController: UITableViewController {
         }
                 
         var newEnabledVirtualObjectRows = Set<Int>()
+        VirtualObject.updateAvaliableObjects();
         for (row, object) in VirtualObject.availableObjects.enumerated() {
             // Enable row always if item is already placed, in order to allow the user to remove it.
             if selectedVirtualObjectRows.contains(row) {

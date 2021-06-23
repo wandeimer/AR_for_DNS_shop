@@ -28,11 +28,7 @@ class DownloadFilesFunction {
     _port = ReceivePort();
   }
 
-  void initial() async {
-
-  }
-
-    Future<Null> prepare(TargetPlatform platform, var _tasks) async {
+  Future<Null> prepare(TargetPlatform platform, var _tasks) async {
     tasks = await FlutterDownloader.loadTasks();
 
     int count = 0;
@@ -145,13 +141,12 @@ class DownloadFilesFunction {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
-  void downloadCallback(
-      String id,
-      DownloadTaskStatus status,
-      int progress) {
+  void downloadCallback(String id, DownloadTaskStatus status, int progress) {
     // debug
-      print('Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
-    final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port');
+    print(
+        'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
     send.send([id, status, progress]);
   }
 }
