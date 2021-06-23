@@ -15,7 +15,8 @@ class VirtualObject: SCNReferenceNode {
     
     /// The model name derived from the `referenceURL`.
     var modelName: String {
-        return referenceURL.lastPathComponent.replacingOccurrences(of: ".scn", with: "")
+        
+        return referenceURL.lastPathComponent.replacingOccurrences(of: ".usdz", with: "").replacingOccurrences(of: "_", with: " ")
     }
     
     /// The alignments that are allowed for a virtual object.
@@ -77,7 +78,7 @@ extension VirtualObject {
         return fileEnumerator.compactMap { element in
             let url = element as! URL
 
-            guard url.pathExtension == "scn" && !url.path.contains("lighting") else { return nil }
+            guard (url.pathExtension == "scn" || url.pathExtension == "usdz") && !url.path.contains("lighting") else { return nil }
 
             return VirtualObject(url: url)
         }
