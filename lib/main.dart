@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'listDownloadedFiles.dart';
-import 'dowloadFilesFunctions.dart';
 import 'downloadPage.dart';
 
 
@@ -30,9 +27,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -41,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const platformViev =
       const MethodChannel('com.objectbeam.flios/navToLogin');
-  DownloadFilesFunction downloadFiles = DownloadFilesFunction();
+  //DownloadFilesFunction downloadFiles = DownloadFilesFunction();
 
   Future<void> _navToLogin() async {
     try {

@@ -76,7 +76,7 @@ class VirtualObjectSelectionViewController: UITableViewController {
         }
                 
         var newEnabledVirtualObjectRows = Set<Int>()
-        VirtualObject.updateAvaliableObjects();
+        //VirtualObject.updateAvaliableObjects();
         for (row, object) in VirtualObject.availableObjects.enumerated() {
             // Enable row always if item is already placed, in order to allow the user to remove it.
             if selectedVirtualObjectRows.contains(row) {
@@ -101,7 +101,8 @@ class VirtualObjectSelectionViewController: UITableViewController {
         let indexPaths = changedRows.map { row in IndexPath(row: row, section: 0) }
 
         DispatchQueue.main.async {
-            self.tableView.reloadRows(at: indexPaths, with: .automatic)
+            self.tableView.reloadData()
+            //self.tableView.reloadRows(at: indexPaths, with: .automatic)
         }
     }
     
