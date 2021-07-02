@@ -1,3 +1,5 @@
+import 'package:flios/download2.dart';
+import 'package:flios/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,17 +13,11 @@ class PocWidget extends StatelessWidget {
       stream: _bloc.state,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Container(
-              child: Center(
-                  child: Text('No deep link was used  ',
-                      style: Theme.of(context).textTheme.title)));
+          return MyApp();
         } else {
-          return Container(
-              child: Center(
-                  child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text('Redirected: ${snapshot.data.substring("poc://deeplink.flutter.dev/".length)}',
-                          style: Theme.of(context).textTheme.title))));
+          return Download(modelLink: snapshot.data);
+          // child: Text('Redirected: ${snapshot.data}',
+          //     style: Theme.of(context).textTheme.title))));
         }
       },
     );

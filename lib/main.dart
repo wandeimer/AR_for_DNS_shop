@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'colorTheme.dart';
 import 'listDownloadedFiles.dart';
-import 'downloadPage.dart';
+//import 'downloadPage.dart';
 import 'DeepLinlk/page.dart';
+import 'download.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(debug: true);
+  await FlutterDownloader.initialize(debug: false);
   //runApp(MyApp());
   runApp(PocApp());
 }
@@ -19,9 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Деплом',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: layoutTheme,
       home: MyHomePage(title: 'Деплом хоум'),
     );
   }
@@ -38,7 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const platformViev =
       const MethodChannel('com.objectbeam.flios/navToLogin');
-  //DownloadFilesFunction downloadFiles = DownloadFilesFunction();
 
   Future<void> _navToLogin() async {
     try {
@@ -59,6 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
     _navToLogin();
   }
 
+  void _removeAllTasks() async {
+    final tasks = await FlutterDownloader.loadTasks();
+    tasks.forEach((e) => FlutterDownloader.remove(taskId: e.taskId, shouldDeleteContent:true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,12 +74,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
+              style: dnsButtonStyle,
               onPressed: () {
                 _incrementCounter();
               },
               child: Text('ЕБАНУТЬ МОДЕЛЬ!!!'),
             ),
             ElevatedButton(
+              style: dnsButtonStyle,
               onPressed: () {
                 Navigator.push(
                     context,
@@ -85,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('СКАЧАТ МОДЕЛ!!!'),
             ),
             ElevatedButton(
+              style: dnsButtonStyle,
               onPressed: () {
                 Navigator.push(
                     context,
@@ -92,6 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               child: Text('а шо там у нас скачалос?'),
+            ),
+            ElevatedButton(
+              style: dnsButtonStyle,
+              onPressed: () {
+                _removeAllTasks();
+              },
+              child: Text('Удалить все нахуй'),
             )
           ],
         ),
