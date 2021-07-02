@@ -9,7 +9,7 @@ ThemeData layoutTheme = ThemeData(
         color: Colors.white,
       )),
   primaryColor: DNSColor,
-  accentColor: Colors.white,
+  accentColor: DNSColor,
   primaryTextTheme: whiteText,
 );
 

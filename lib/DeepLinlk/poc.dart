@@ -1,4 +1,4 @@
-import 'package:flios/download2.dart';
+import 'package:flios/downloadAfterRecieveLink.dart';
 import 'package:flios/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

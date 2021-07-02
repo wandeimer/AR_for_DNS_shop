@@ -1,8 +1,6 @@
-import 'package:flios/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../colorTheme.dart';
-import '../downloadPage.dart';
 import 'poc.dart';
 
 import 'bloc.dart';

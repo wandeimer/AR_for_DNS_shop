@@ -81,27 +81,23 @@ class _DownloadState extends State<Download> {
       _incrementCounter();
     }
     return Center(
-      child: SizedBox(
-        child: CircularProgressIndicator(
+        child: SizedBox(
+          child: CircularProgressIndicator(
             value: _progress / 100,
-        backgroundColor: Color(0xE6EE8E19),),
-        height: 200.0,
-        width: 200.0,
-      ));
+      ),
+      height: 200.0,
+      width: 200.0,
+    ));
   }
 
   Future<void> _initialize() async {
     _isBusy = true;
     if (widget.modelLink != null) {
       if (Platform.isAndroid) {
-        _link = "http://wandeimer.beget.tech/3D_models_DNS/" +
-            widget.modelLink +
-            ".fbx";
+        _link = "http://wandeimer.beget.tech/" + widget.modelLink + ".fbx";
       }
       if (Platform.isIOS) {
-        _link = "http://wandeimer.beget.tech/3D_models_DNS/" +
-            widget.modelLink +
-            ".usdz";
+        _link = "http://wandeimer.beget.tech/" + widget.modelLink + ".usdz";
       }
     }
 

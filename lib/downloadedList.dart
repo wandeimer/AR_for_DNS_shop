@@ -8,12 +8,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'colorTheme.dart';
+
 const debug = true;
 
 class DownloadPage extends StatefulWidget with WidgetsBindingObserver {
   final TargetPlatform platform;
+  final String modelLink;
 
-  DownloadPage({Key key, this.title, this.platform}) : super(key: key);
+  DownloadPage({Key key, this.title, this.platform, this.modelLink}) : super(key: key);
 
   final String title;
 
@@ -22,28 +25,6 @@ class DownloadPage extends StatefulWidget with WidgetsBindingObserver {
 }
 
 class _DownloadPageState extends State<DownloadPage> {
-  final _models = [
-    {
-      'name': 'Плита большая',
-      'link':
-      'http://wandeimer.beget.tech/3D_models_DNS/Cook_double_owen_top_electro/Cook_double_owen_top_electro.usdz'
-    },
-    {
-      'name': 'Микроволновка',
-      'link':
-      'http://wandeimer.beget.tech/3D_models_DNS/Microwave_oven_white/Microwave_oven_white.usdz'
-    },
-    {
-      'name': 'Комп',
-      'link':
-      'http://wandeimer.beget.tech/3D_models_DNS/PC_2/pc.usdz'
-    },
-    {
-      'name': 'Холодос',
-      'link':
-      'http://wandeimer.beget.tech/3D_models_DNS/Refrigerator_white_1-side/ref.usdz'
-    },
-  ];
 
   List<_TaskInfo> _tasks;
   List<_ItemHolder> _items;
@@ -115,18 +96,26 @@ class _DownloadPageState extends State<DownloadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Загрузки"),
-      ),
-      body: Builder(
-          builder: (context) => _isLoading
-              ? new Center(
-            child: new CircularProgressIndicator(),
-          )
-              : _permissionReady
-              ? _buildDownloadList()
-              : _buildNoPermissionWarning()),
+    return Scaffold(
+        appBar: new AppBar(
+          title: new Text("Загрузки"),
+        ),
+        body: Builder(
+            builder: (context) => _isLoading
+                ? new Center(
+              child: new CircularProgressIndicator(),
+            )
+                : _permissionReady
+                ? _buildDownloadList()
+                : _buildNoPermissionWarning()),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _removeAllTasks();
+            setState(() {});
+          },
+          child: const Icon(Icons.delete_forever),
+          backgroundColor: Colors.red,
+        ),
     );
   }
 
@@ -169,7 +158,7 @@ class _DownloadPageState extends State<DownloadPage> {
     child: Text(
       title,
       style: TextStyle(
-          fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 18.0),
+          fontWeight: FontWeight.bold, color: DNSColor, fontSize: 18.0),
     ),
   );
 
@@ -260,6 +249,12 @@ class _DownloadPageState extends State<DownloadPage> {
     setState(() {});
   }
 
+  void _removeAllTasks() async {
+    final tasks = await FlutterDownloader.loadTasks();
+    tasks.forEach((e) => FlutterDownloader.remove(taskId: e.taskId, shouldDeleteContent:true));
+    await _prepare();
+  }
+
   Future<bool> _checkPermission() async {
     if (widget.platform == TargetPlatform.android) {
       final status = await Permission.storage.status;
@@ -283,9 +278,31 @@ class _DownloadPageState extends State<DownloadPage> {
     int count = 0;
     _tasks = [];
     _items = [];
+    String _name;
+    String _link;
 
-    _tasks.addAll(_models.map((document) =>
-        _TaskInfo(name: document['name'], link: document['link'])));
+    if (widget.modelLink != null){
+      _name = widget.modelLink.substring(widget.modelLink.lastIndexOf("/"));
+      if (Platform.isAndroid) {
+        _link = "http://wandeimer.beget.tech/3D_models_DNS/" + widget.modelLink + ".fbx";
+      }
+      if (Platform.isIOS) {
+        _link = "http://wandeimer.beget.tech/3D_models_DNS/" + widget.modelLink + ".usdz";
+      }
+      _tasks.add(_TaskInfo(name: _name, link: _link));
+    }
+
+    if (tasks.length != _tasks.length) {
+      var _tasksLinks = [];
+      _tasks.forEach((task) {
+        _tasksLinks.add(task.link);
+      });
+      tasks.forEach((task) {
+        if (!_tasksLinks.contains(task.url)) {
+          _tasks.add(_TaskInfo(name: task.filename, link: task.url));
+        }
+      });
+    }
 
     _items.add(_ItemHolder(name: 'Models'));
     for (int i = count; i < _tasks.length; i++) {
@@ -302,6 +319,8 @@ class _DownloadPageState extends State<DownloadPage> {
         }
       }
     });
+
+
 
     _permissionReady = await _checkPermission();
 
